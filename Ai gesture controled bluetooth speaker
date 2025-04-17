@@ -1,0 +1,31 @@
+#include <Wire.h>
+#include <MPU6050.h>
+#include "gesture_model.h" // Your model header file
+
+MPU6050 mpu;
+float ax, ay, az;
+
+void setup() {
+  Serial.begin(115200);
+  Wire.begin();
+  mpu.initialize();
+}
+
+void loop() {
+  mpu.getAcceleration(&ax, &ay, &az);
+
+  // Feed input to the model (you'll replace this with real input feature vector)
+  float input[3] = {ax, ay, az};
+  
+  // Run inference (your model's code will define predict_gesture())
+  int gesture = predict_gesture(input); 
+  
+  switch(gesture) {
+    case 0: Serial.println("Play/Pause"); break;
+    case 1: Serial.println("Next"); break;
+    case 2: Serial.println("Previous"); break;
+    default: break;
+  }
+
+  delay(1000);
+}
